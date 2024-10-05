@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Shooting : MonoBehaviour
 {
@@ -12,6 +13,11 @@ public class Shooting : MonoBehaviour
     private float timer;
     public float timeBetweenFiring;
 
+    private int maxBullets = 5;
+    private static int currentBullets = 0;
+
+    public TextMeshPro gloante;
+
     void Start()
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -19,6 +25,10 @@ public class Shooting : MonoBehaviour
 
     void Update()
     {
+        gloante.text = (maxBullets - currentBullets).ToString();
+
+        Vector3 direction = mouse - transform.position;
+
         mouse = mainCam.ScreenToWorldPoint(Input.mousePosition);
 
         Vector3 rotation = mouse - transform.position; 
@@ -35,11 +45,37 @@ public class Shooting : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && canFire)
+        if (Input.GetMouseButtonDown(0) && canFire && currentBullets < maxBullets)
         {
             canFire = false;
-            Instantiate(bullet, bulletTransform.position, Quaternion.identity);
+            FireBullet();
+        }
+
+        if(direction.x >= 0.01f)
+        {
+            bulletTransform.localScale = new Vector3(0.75f, 0.75f, 1f);
+            gloante.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        else if(direction.x <= -0.01f)
+        {
+            bulletTransform.localScale = new Vector3(0.75f, -0.75f, 1f);
+            gloante.transform.localScale = new Vector3(-1f, 1f, 1f);
         }
 
     }
+
+    void FireBullet()
+    {
+        Instantiate(bullet, bulletTransform.position, Quaternion.identity);
+        currentBullets++; 
+    }
+
+    public static void DecreaseBulletCount()
+    {
+        if (currentBullets > 0)
+        {
+            currentBullets--;
+        }
+    }
+
 }

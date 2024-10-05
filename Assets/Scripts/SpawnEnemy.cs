@@ -6,8 +6,12 @@ public class SpawnEnemy : MonoBehaviour
 {
 
     public GameObject enemy;
-    private float timeBetweenSpawn = 10f;
+    private float timeBetweenSpawn = 5f;
     private float spawnTime;
+
+    private int maxEnemies = 5;
+    private int count = 0;
+    private int killCount = 0;
 
     void Start()
     {
@@ -17,7 +21,7 @@ public class SpawnEnemy : MonoBehaviour
 
     void Update()
     {
-        if(Time.time > spawnTime)
+        if(Time.time > spawnTime && count < maxEnemies)
         {
             SpawnRegularEnemy();
             spawnTime = Time.time + timeBetweenSpawn;
@@ -27,5 +31,16 @@ public class SpawnEnemy : MonoBehaviour
     void SpawnRegularEnemy()
     {
         Instantiate(enemy);
+        count++;
+    }
+
+    public void OnEnemyDestroyed()
+    {
+        killCount++;
+    }
+
+    public int getKillCount()
+    {
+        return killCount;
     }
 }

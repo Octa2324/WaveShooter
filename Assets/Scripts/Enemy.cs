@@ -24,10 +24,10 @@ public class Enemy : MonoBehaviour
     {
         if(aiPath.desiredVelocity.x >= 0.01f)
         {
-            transform.localScale = new Vector3(-0.2f, 0.2f, 1f);
+            transform.localScale = new Vector3(-0.1f, 0.1f, 1f);
         }else if(aiPath.desiredVelocity.x <= -0.01)
         {
-            transform.localScale = new Vector3(0.2f, 0.2f, 1f);
+            transform.localScale = new Vector3(0.1f, 0.1f, 1f);
         }
     }
 
@@ -37,6 +37,11 @@ public class Enemy : MonoBehaviour
         health -= damage; ;
         if (health <= 0)
         {
+            SpawnEnemy spawner = FindObjectOfType<SpawnEnemy>();
+            if (spawner != null)
+            {
+                spawner.OnEnemyDestroyed();
+            }
             Destroy(this.gameObject);
         }
     }
