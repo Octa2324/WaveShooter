@@ -9,6 +9,8 @@ public class Level1Manager : MonoBehaviour
     public GameObject gameOverCanvas;
     private SpawnEnemy enemy;
 
+    private CanvasGroup gameOverCanvasGroup;
+
     void Start()
     {
         enemy = FindObjectOfType<SpawnEnemy>();
@@ -17,6 +19,10 @@ public class Level1Manager : MonoBehaviour
         {
             nextLevelCanvas.SetActive(false);
         }
+
+        gameOverCanvasGroup = gameOverCanvas.GetComponent<CanvasGroup>();
+        gameOverCanvasGroup.alpha = 0; 
+        gameOverCanvas.SetActive(false);
     }
 
     void Update()
@@ -28,6 +34,7 @@ public class Level1Manager : MonoBehaviour
         if(GameObject.FindGameObjectWithTag("Player") == null)
         {
             gameOverCanvas.SetActive(true);
+            StartCoroutine(FadeInGameOverScreen());
         }
     }
 
@@ -43,5 +50,22 @@ public class Level1Manager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    private IEnumerator FadeInGameOverScreen()
+    {
+        float duration = 1.0f; 
+        float time = 0; 
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            gameOverCanvasGroup.alpha = Mathf.Lerp(0, 1, time / duration); 
+            yield return null; 
+        }
+
+        gameOverCanvasGroup.alpha = 1; 
+    }
+
+   
 
 }

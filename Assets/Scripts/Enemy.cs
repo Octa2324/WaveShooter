@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     private AIDestinationSetter aiDestinationSetter;
     public AIPath aiPath;
 
+    private Animator animator;
+    private bool isDead = false;
+
 
     void Start()
     {
@@ -18,42 +21,58 @@ public class Enemy : MonoBehaviour
 
         aiDestinationSetter = GetComponent<AIDestinationSetter>();
         aiDestinationSetter.target = player.transform;
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
         if(aiPath.desiredVelocity.x >= 0.01f)
         {
-            transform.localScale = new Vector3(-0.1f, 0.1f, 1f);
+            transform.localScale = new Vector3(5f, 5f, 1f);
         }else if(aiPath.desiredVelocity.x <= -0.01)
         {
-            transform.localScale = new Vector3(0.1f, 0.1f, 1f);
+            transform.localScale = new Vector3(-5f, 5f, 1f);
         }
     }
 
 
     public void TakeDamage(float damage)
     {
-        health -= damage; ;
-        if (health <= 0)
+        health -= damage;
+
+        if (health <= 0 && !isDead)
         {
-            SpawnEnemy spawner = FindObjectOfType<SpawnEnemy>();
-            if (spawner != null)
-            {
-                spawner.OnEnemyDestroyed();
-            }
-            Destroy(this.gameObject);
+            Die(); 
+        }
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        animator.SetTrigger("Die");
+        aiPath.enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        Destroy(gameObject, 1f); 
+        SpawnEnemy spawner = FindObjectOfType<SpawnEnemy>();
+        if (spawner != null)
+        {
+            spawner.OnEnemyDestroyed();
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
-            Destroy(player.gameObject);
+            PlayerController playerController = collision.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.Die();
+                Destroy(player.gameObject);
+            }
         }
     }
-
-  
-
 }

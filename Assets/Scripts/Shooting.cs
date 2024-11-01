@@ -14,18 +14,22 @@ public class Shooting : MonoBehaviour
     public float timeBetweenFiring;
 
     private int maxBullets = 5;
-    private static int currentBullets = 0;
+    private static int currentBullets = 2;
 
     public TextMeshPro gloante;
+    public GameObject ammoDrop;
+    private bool hasSpawned = false;
+
 
     void Start()
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        UpdateBulletDisplay();
     }
 
     void Update()
     {
-        gloante.text = (maxBullets - currentBullets).ToString();
+        UpdateBulletDisplay();
 
         Vector3 direction = mouse - transform.position;
 
@@ -45,7 +49,7 @@ public class Shooting : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0) && canFire && currentBullets < maxBullets)
+        if (Input.GetMouseButtonDown(0) && canFire && currentBullets < maxBullets && currentBullets > 0)
         {
             canFire = false;
             FireBullet();
@@ -53,13 +57,19 @@ public class Shooting : MonoBehaviour
 
         if(direction.x >= 0.01f)
         {
-            bulletTransform.localScale = new Vector3(0.75f, 0.75f, 1f);
+            bulletTransform.localScale = new Vector3(0.05f, 0.05f, 1f);
             gloante.transform.localScale = new Vector3(1f, 1f, 1f);
         }
         else if(direction.x <= -0.01f)
         {
-            bulletTransform.localScale = new Vector3(0.75f, -0.75f, 1f);
+            bulletTransform.localScale = new Vector3(0.05f, -0.05f, 1f);
             gloante.transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+
+        if(currentBullets == 0 && hasSpawned == false)
+        {
+            SpawnAmmoDrop();
+            hasSpawned = true;
         }
 
     }
@@ -67,7 +77,8 @@ public class Shooting : MonoBehaviour
     void FireBullet()
     {
         Instantiate(bullet, bulletTransform.position, Quaternion.identity);
-        currentBullets++; 
+        currentBullets--;
+        UpdateBulletDisplay();
     }
 
     public static void DecreaseBulletCount()
@@ -75,6 +86,24 @@ public class Shooting : MonoBehaviour
         if (currentBullets > 0)
         {
             currentBullets--;
+        }
+    }
+
+    public static void IncreaseBulletCount(int amount)
+    {
+        currentBullets = Mathf.Clamp(currentBullets + amount, 0, 5); 
+    }
+
+    private void UpdateBulletDisplay()
+    {
+        gloante.text =currentBullets.ToString();
+    }
+
+    private void SpawnAmmoDrop()
+    {
+        if (!GameObject.FindWithTag("AmmoDrop"))
+        {
+            Instantiate(ammoDrop);
         }
     }
 

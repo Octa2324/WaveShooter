@@ -7,6 +7,8 @@ TagManager:
   - Border
   - Wall
   - Bullet
+  - AmmoDrop
+  - Enemy
   layers:
   - Default
   - TransparentFX
