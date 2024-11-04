@@ -23,6 +23,11 @@ public class Level1Manager : MonoBehaviour
         gameOverCanvasGroup = gameOverCanvas.GetComponent<CanvasGroup>();
         gameOverCanvasGroup.alpha = 0; 
         gameOverCanvas.SetActive(false);
+
+        if (TargetCursor.Instance != null)
+        {
+            TargetCursor.Instance.ShowCursor(false);
+        }
     }
 
     void Update()
@@ -34,6 +39,10 @@ public class Level1Manager : MonoBehaviour
         if(GameObject.FindGameObjectWithTag("Player") == null)
         {
             gameOverCanvas.SetActive(true);
+            if (TargetCursor.Instance != null)
+            {
+                TargetCursor.Instance.ShowCursor(true); 
+            }
             StartCoroutine(FadeInGameOverScreen());
         }
     }
@@ -43,12 +52,21 @@ public class Level1Manager : MonoBehaviour
         if(nextLevelCanvas != null)
         {
             nextLevelCanvas.SetActive(true);
+            if (TargetCursor.Instance != null)
+            {
+                TargetCursor.Instance.ShowCursor(true);
+            }
         }
     }
 
     public void Restart()
     {
+        Shooting.ResetShootingState();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (TargetCursor.Instance != null)
+        {
+            TargetCursor.Instance.ShowCursor(false); 
+        }
     }
 
     private IEnumerator FadeInGameOverScreen()

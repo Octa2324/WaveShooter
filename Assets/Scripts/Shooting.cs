@@ -20,6 +20,8 @@ public class Shooting : MonoBehaviour
     public GameObject ammoDrop;
     private bool hasSpawned = false;
 
+    public TextMeshProUGUI nr;
+
 
     void Start()
     {
@@ -97,14 +99,46 @@ public class Shooting : MonoBehaviour
     private void UpdateBulletDisplay()
     {
         gloante.text =currentBullets.ToString();
+        nr.text = gloante.text;
     }
 
     private void SpawnAmmoDrop()
     {
         if (!GameObject.FindWithTag("AmmoDrop"))
         {
-            Instantiate(ammoDrop);
+            GameObject newAmmoDrop = Instantiate(ammoDrop);
+            StartCoroutine(FadeIn(newAmmoDrop));
         }
+    }
+
+    private IEnumerator FadeIn(GameObject obj)
+    {
+        SpriteRenderer spriteRenderer = obj.GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer != null)
+        {
+            float duration = 1.0f;  
+            float elapsedTime = 0f;
+            Color color = spriteRenderer.color;
+            color.a = 0f;
+            spriteRenderer.color = color;
+            while (elapsedTime < duration)
+            {
+                if (spriteRenderer == null) yield break; 
+
+                elapsedTime += Time.deltaTime;
+                color.a = Mathf.Clamp01(elapsedTime / duration);  
+                spriteRenderer.color = color;
+                yield return null;
+            }
+            color.a = 1f;
+            spriteRenderer.color = color;
+        }
+    }
+
+    public static void ResetShootingState()
+    {
+        currentBullets = 2;
     }
 
 }
