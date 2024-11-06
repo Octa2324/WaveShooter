@@ -32,9 +32,9 @@ public class Level1Manager : MonoBehaviour
 
     void Update()
     {
-        if (enemy != null && enemy.getKillCount() == 5)
+        if (enemy != null && enemy.getKillCount() == 5 && GameObject.FindGameObjectWithTag("Player") != null) 
         {
-            ShowGameOverScreen();
+            ShowNextLevelScreen();
         }
         if(GameObject.FindGameObjectWithTag("Player") == null)
         {
@@ -47,7 +47,7 @@ public class Level1Manager : MonoBehaviour
         }
     }
 
-    void ShowGameOverScreen()
+    void ShowNextLevelScreen()
     {
         if(nextLevelCanvas != null)
         {
