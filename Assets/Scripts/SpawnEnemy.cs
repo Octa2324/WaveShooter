@@ -17,9 +17,12 @@ public class SpawnEnemy : MonoBehaviour
 
     private bool playerIsAlive = true;
 
+    private SoundEffectsPlayer soundEffectsPlayer;
+
     void Start()
     {
         spawnTime = Time.time + timeBetweenSpawn;
+        soundEffectsPlayer = FindObjectOfType<SoundEffectsPlayer>();
     }
 
 
@@ -38,7 +41,7 @@ public class SpawnEnemy : MonoBehaviour
         {
             int randomIndex = Random.Range(0, spawnPositions.Length);
             Vector3 spawnLocation = spawnPositions[randomIndex].position;
-
+            soundEffectsPlayer.EnemySpawnSound();
             Instantiate(enemy, spawnLocation, Quaternion.identity);
             count++;
         }

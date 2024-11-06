@@ -14,6 +14,8 @@ public class Enemy : MonoBehaviour
     private Animator animator;
     private bool isDead = false;
 
+    private SoundEffectsPlayer soundEffectsPlayer;
+
 
     void Start()
     {
@@ -23,6 +25,7 @@ public class Enemy : MonoBehaviour
         aiDestinationSetter.target = player.transform;
 
         animator = GetComponent<Animator>();
+        soundEffectsPlayer = FindObjectOfType<SoundEffectsPlayer>();
     }
 
     void Update()
@@ -43,7 +46,8 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0 && !isDead)
         {
-            Die(); 
+            Die();
+            soundEffectsPlayer.EnemyDieSound();
         }
     }
 

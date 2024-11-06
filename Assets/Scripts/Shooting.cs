@@ -22,11 +22,14 @@ public class Shooting : MonoBehaviour
 
     public TextMeshProUGUI nr;
 
+    private SoundEffectsPlayer soundEffectsPlayer;
+
 
     void Start()
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         UpdateBulletDisplay();
+        soundEffectsPlayer = FindObjectOfType<SoundEffectsPlayer>();
     }
 
     void Update()
@@ -79,6 +82,7 @@ public class Shooting : MonoBehaviour
     void FireBullet()
     {
         Instantiate(bullet, bulletTransform.position, Quaternion.identity);
+        soundEffectsPlayer.Shoot();
         currentBullets--;
         UpdateBulletDisplay();
     }
