@@ -47,7 +47,6 @@ public class Level1Manager : MonoBehaviour
         else if (GameObject.FindGameObjectWithTag("Player") == null)
         {
             ShowGameOverScreen();
-            soundEffectsPlayer.Defeat();
         }
     }
 
@@ -55,6 +54,7 @@ public class Level1Manager : MonoBehaviour
     {
         if (gameOverCanvas != null && gameOverCanvasGroup != null)
         {
+            soundEffectsPlayer.Defeat();
             gameOverCanvas.SetActive(true);
             if (TargetCursor.Instance != null)
             {
