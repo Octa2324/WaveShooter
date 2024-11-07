@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AmmoDrop : MonoBehaviour
 {
-    private int bulletAmount = 3;
+    private int bulletAmount = 20;
     private SoundEffectsPlayer soundEffectsPlayer;
 
     void Start()

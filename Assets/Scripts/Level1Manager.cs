@@ -12,9 +12,13 @@ public class Level1Manager : MonoBehaviour
     private CanvasGroup gameOverCanvasGroup;
     private CanvasGroup nextLevelCanvasGroup;
 
+    private SoundEffectsPlayer soundEffectsPlayer;
+
 
     void Start()
     {
+        soundEffectsPlayer = FindObjectOfType<SoundEffectsPlayer>();
+
         enemy = FindObjectOfType<SpawnEnemy>();
 
         if (nextLevelCanvas != null)
@@ -36,13 +40,14 @@ public class Level1Manager : MonoBehaviour
 
     void Update()
     {
-        if (enemy != null && enemy.getKillCount() == 5 )
+        if (enemy != null && enemy.getKillCount() == 25 )
         {
             StartCoroutine(CheckAndShowNextLevelScreen());
         }
         else if (GameObject.FindGameObjectWithTag("Player") == null)
         {
             ShowGameOverScreen();
+            soundEffectsPlayer.Defeat();
         }
     }
 
@@ -61,6 +66,7 @@ public class Level1Manager : MonoBehaviour
 
     private IEnumerator CheckAndShowNextLevelScreen()
     {
+        soundEffectsPlayer.Victory();
         yield return new WaitForSeconds(2f);
 
         if (GameObject.FindGameObjectWithTag("Player") != null) 
@@ -96,7 +102,9 @@ public class Level1Manager : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadSceneAsync(0);
+        Shooting.ResetShootingState();
+        //SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 
     private IEnumerator FadeInGameOverScreen()

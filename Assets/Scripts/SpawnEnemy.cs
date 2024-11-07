@@ -6,10 +6,10 @@ public class SpawnEnemy : MonoBehaviour
 {
 
     public GameObject enemy;
-    private float timeBetweenSpawn = 5f;
+    private float timeBetweenSpawn = 1.2f;
     private float spawnTime;
 
-    private int maxEnemies = 5;
+    private int maxEnemies = 25;
     private int count = 0;
     private int killCount = 0;
 

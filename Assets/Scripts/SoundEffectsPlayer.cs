@@ -6,7 +6,7 @@ public class SoundEffectsPlayer : MonoBehaviour
 {
     public AudioSource src; // For general SFX
     public AudioSource walkSource; // For walking SFX
-    public AudioClip shoot, enemySpawn, enemyDie, playerDie, walk, pickUp;
+    public AudioClip shoot, enemySpawn, enemyDie, playerDie, walk, pickUp, click, defeat, victory;
     private bool isWalking = false;
 
     public void Shoot()
@@ -28,6 +28,18 @@ public class SoundEffectsPlayer : MonoBehaviour
     public void PickUpBook()
     {
         src.PlayOneShot(pickUp);
+    }
+    public void Click()
+    {
+        src.PlayOneShot(click);
+    }
+    public void Defeat()
+    {
+        src.PlayOneShot(defeat);
+    }
+    public void Victory()
+    {
+        src.PlayOneShot(victory);
     }
     public void Walk()
     {

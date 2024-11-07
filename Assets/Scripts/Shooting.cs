@@ -13,8 +13,8 @@ public class Shooting : MonoBehaviour
     private float timer;
     public float timeBetweenFiring;
 
-    private int maxBullets = 5;
-    private static int currentBullets = 2;
+    private int maxBullets = 30;
+    private static int currentBullets = 10;
 
     public TextMeshPro gloante;
     public GameObject ammoDrop;
@@ -97,7 +97,7 @@ public class Shooting : MonoBehaviour
 
     public static void IncreaseBulletCount(int amount)
     {
-        currentBullets = Mathf.Clamp(currentBullets + amount, 0, 5); 
+        currentBullets = Mathf.Clamp(currentBullets + amount, 0, 20); 
     }
 
     private void UpdateBulletDisplay()
@@ -142,7 +142,7 @@ public class Shooting : MonoBehaviour
 
     public static void ResetShootingState()
     {
-        currentBullets = 2;
+        currentBullets = 10;
     }
 
 }
