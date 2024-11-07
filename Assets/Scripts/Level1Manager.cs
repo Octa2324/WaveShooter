@@ -94,6 +94,11 @@ public class Level1Manager : MonoBehaviour
         }
     }
 
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
+
     private IEnumerator FadeInGameOverScreen()
     {
         float duration = 1.0f;

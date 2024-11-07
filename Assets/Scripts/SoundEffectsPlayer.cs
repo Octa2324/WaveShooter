@@ -6,7 +6,7 @@ public class SoundEffectsPlayer : MonoBehaviour
 {
     public AudioSource src; // For general SFX
     public AudioSource walkSource; // For walking SFX
-    public AudioClip shoot, enemySpawn, enemyDie, playerDie, walk;
+    public AudioClip shoot, enemySpawn, enemyDie, playerDie, walk, pickUp;
     private bool isWalking = false;
 
     public void Shoot()
@@ -24,6 +24,10 @@ public class SoundEffectsPlayer : MonoBehaviour
     public void PlayerDieSound()
     {
         src.PlayOneShot(playerDie);
+    }
+    public void PickUpBook()
+    {
+        src.PlayOneShot(pickUp);
     }
     public void Walk()
     {
