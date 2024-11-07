@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
 
     private SpawnEnemy spawnEnemy;
 
+    private SoundEffectsPlayer soundEffectsPlayer;
+
+    private bool isDead = false;
 
     void Start()
     {
@@ -19,10 +22,24 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         spawnEnemy = FindObjectOfType<SpawnEnemy>();
+        soundEffectsPlayer = FindObjectOfType<SoundEffectsPlayer>();
     }
 
     void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+        if (movement.magnitude > 0.01f)
+        {
+            soundEffectsPlayer.Walk();
+        }
+        else
+        {
+            soundEffectsPlayer.StopWalk();
+        }
+
         if (movement.x >= 0.01f)
         {
             transform.localScale = new Vector3(3f, 3f, 1f);
@@ -46,12 +63,21 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
+        if (isDead) return;
+        isDead = true;
+        movement = Vector2.zero;
+        rb.velocity = Vector2.zero;
         animator.SetTrigger("Die");
+        soundEffectsPlayer.PlayerDieSound();
+        soundEffectsPlayer.StopWalk();
         if (spawnEnemy != null)
         {
             spawnEnemy.StopSpawning();
             Debug.Log("Stopped spawning enemies because player died.");
         }
+
+        StartCoroutine(DelayedDestroy()); ;
+
         Enemy[] enemies = FindObjectsOfType<Enemy>();
         foreach (Enemy enemy in enemies)
         {
@@ -59,8 +85,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private IEnumerator DelayedDestroy()
+    {
+        yield return new WaitForSeconds(1f); 
+        Destroy(this.gameObject);
+    }
+
     void FixedUpdate()
     {
+        if (isDead) return;
         rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
     }
 }

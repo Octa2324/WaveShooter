@@ -4,27 +4,44 @@ using UnityEngine;
 
 public class SoundEffectsPlayer : MonoBehaviour
 {
-    public AudioSource src;
-    public AudioClip shoot, enemySpawn, enemyDie, playerDie;
+    public AudioSource src; // For general SFX
+    public AudioSource walkSource; // For walking SFX
+    public AudioClip shoot, enemySpawn, enemyDie, playerDie, walk;
+    private bool isWalking = false;
 
     public void Shoot()
     {
-        src.clip = shoot;
-        src.Play();
+        src.PlayOneShot(shoot);
     }
     public void EnemySpawnSound()
     {
-        src.clip = enemySpawn;
-        src.Play();
+        src.PlayOneShot(enemySpawn);
     }
     public void EnemyDieSound()
     {
-        src.clip = enemyDie;
-        src.Play();
+        src.PlayOneShot(enemyDie);
     }
     public void PlayerDieSound()
     {
-        src.clip = playerDie;
-        src.Play();
+        src.PlayOneShot(playerDie);
+    }
+    public void Walk()
+    {
+        if (!isWalking)
+        {
+            walkSource.clip = walk;
+            walkSource.loop = true;
+            walkSource.Play();
+            isWalking = true;
+        }
+    }
+    public void StopWalk()
+    {
+        if (isWalking)
+        {
+            walkSource.loop = false;
+            walkSource.Stop();
+            isWalking = false;
+        }
     }
 }

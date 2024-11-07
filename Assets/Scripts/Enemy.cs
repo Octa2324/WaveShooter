@@ -75,7 +75,6 @@ public class Enemy : MonoBehaviour
             if (playerController != null)
             {
                 playerController.Die();
-                Destroy(player.gameObject);
             }
         }
     }

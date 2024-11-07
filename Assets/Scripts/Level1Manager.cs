@@ -12,6 +12,7 @@ public class Level1Manager : MonoBehaviour
     private CanvasGroup gameOverCanvasGroup;
     private CanvasGroup nextLevelCanvasGroup;
 
+
     void Start()
     {
         enemy = FindObjectOfType<SpawnEnemy>();
@@ -35,11 +36,19 @@ public class Level1Manager : MonoBehaviour
 
     void Update()
     {
-        if (enemy != null && enemy.getKillCount() == 5 && GameObject.FindGameObjectWithTag("Player") != null)
+        if (enemy != null && enemy.getKillCount() == 5 )
         {
-            ShowNextLevelScreen();
+            StartCoroutine(CheckAndShowNextLevelScreen());
         }
-        if (GameObject.FindGameObjectWithTag("Player") == null)
+        else if (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            ShowGameOverScreen();
+        }
+    }
+
+    void ShowGameOverScreen()
+    {
+        if (gameOverCanvas != null && gameOverCanvasGroup != null)
         {
             gameOverCanvas.SetActive(true);
             if (TargetCursor.Instance != null)
@@ -50,16 +59,28 @@ public class Level1Manager : MonoBehaviour
         }
     }
 
+    private IEnumerator CheckAndShowNextLevelScreen()
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (GameObject.FindGameObjectWithTag("Player") != null) 
+        {
+            ShowNextLevelScreen();
+        }
+    }
+
     void ShowNextLevelScreen()
     {
-        if (nextLevelCanvas != null)
+        if (nextLevelCanvas != null && GameObject.FindGameObjectWithTag("Player") != null)
         {
             nextLevelCanvas.SetActive(true);
+            nextLevelCanvasGroup.alpha = 1;
             if (TargetCursor.Instance != null)
             {
                 TargetCursor.Instance.ShowCursor(true);
             }
-            StartCoroutine(FadeInNextLevelScreen());
+            //StartCoroutine(FadeInNextLevelScreen());
+
         }
     }
 
@@ -102,4 +123,5 @@ public class Level1Manager : MonoBehaviour
 
         nextLevelCanvasGroup.alpha = 1;
     }
+
 }
